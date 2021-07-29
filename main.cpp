@@ -261,8 +261,15 @@ int main()
   vector<double>f(2), x(10); 
   for(int i = 0 ; i <100000; i++)
   {
-    for(auto &a:x) a = rand()/(double)RAND_MAX;
-    imb1(x, f);
+    double u = rand()/(double)RAND_MAX;
+    for(int j = 0; j < x.size(); j++) //optimal imb7
+    {
+	x[j]=rand()/((double)RAND_MAX+1);
+	if(j==0)continue;
+	if(x[0]>0.5 && x[0]<0.8)x[j]=sin(0.5*M_PI*x[0]);
+	else  x[j]=0.5;
+    }
+    imb7(x, f);
     for(auto &m:f)cout <<m<<" ";
     cout<<endl;
   }
