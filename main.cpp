@@ -246,7 +246,7 @@ void imb10(vector<double> &x, vector<double> &f)
   for(int i = 2; i < n; i++)
   {
      double ti = x[i] - x[0]*x[1], si=x[i]-((x[0]+x[1])/2.0);
-     if(x[0]>=0.2 && x[0]<=0.8 && x[1] >=0.2 && x[1]<=0.8)
+     if((x[0]>=0.2 && x[0]<=0.8) && ( x[1] >=0.2 && x[1]<=0.8))
        gx += 2.0*(-0.9*si*si + pow(fabs(si), 0.6)); 
      else 
        gx += pow(fabs(ti), 0.6);
@@ -258,18 +258,18 @@ void imb10(vector<double> &x, vector<double> &f)
 int main()
 {
   srand(time(0));
-  vector<double>f(2), x(10); 
+  vector<double>f(3), x(10); 
   for(int i = 0 ; i <100000; i++)
   {
-    double u = rand()/(double)RAND_MAX;
-    for(int j = 0; j < x.size(); j++) //optimal imb7
+    for(int j = 0; j < x.size(); j++) //optimal imb10
     {
 	x[j]=rand()/((double)RAND_MAX+1);
-	if(j==0)continue;
-	if(x[0]>0.5 && x[0]<0.8)x[j]=sin(0.5*M_PI*x[0]);
-	else  x[j]=0.5;
+	if(j==0||j==1)continue;
+	if((x[0]>=0.2 && x[0]<=0.8) && ( x[1]>=0.2 && x[1]<=0.8))x[j]=(x[0]+x[1])/2.0;
+	else  
+x[j]=x[0]*x[1];
     }
-    imb7(x, f);
+    imb10(x, f);
     for(auto &m:f)cout <<m<<" ";
     cout<<endl;
   }
